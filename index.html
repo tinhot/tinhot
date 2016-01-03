@@ -1,40 +1,38 @@
-
 <!DOCTYPE html>
 <html lang="en" ng-app="myApp" ng-controller="myCtrl">
 <head>
   <title>{{domain}}</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/css/bootstrap.min.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/angular-loading-bar/0.8.0/loading-bar.min.css"/>
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.8/angular.min.js"></script>
-  <style>.navbar-blue {
-    border-width:0;
-	background-color:#3B5999;
-}
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.14.3/ui-bootstrap-tpls.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.8/angular-cookies.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.8/angular-animate.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-loading-bar/0.8.0/loading-bar.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/js/bootstrap.min.js"></script>
+  
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/vi_VN/sdk.js#xfbml=1&version=v2.5&appId=928485927213150";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
 
-.navbar-blue li > a,.navbar-toggle  {
-   color:#efefef;
-}
+  <style>
+.nav,.pagination,.carousel,.panel-title a{cursor:pointer}/*this for ui-bootstrap.min.js*/
 
-.navbar-blue .dropdown-menu li a{color:#2A4888;}
-.navbar-blue .dropdown-menu li > a {padding-left:30px;}
+#loading-bar .bar{background:#F12B24}#loading-bar-spinner .spinner-icon{border-top-color:#F12B24;border-left-color:#F12B24}#loading-bar .peg{-moz-box-shadow:#F12B24 1px 0 6px 1px;-ms-box-shadow:#F12B24 1px 0 6px 1px;-webkit-box-shadow:#F12B24 1px 0 6px 1px;box-shadow:#F12B24 1px 0 6px 1px}/*this for loading-bar*/
 
-.navbar-blue li>a:hover, .navbar-blue li>a:focus, .navbar-blue .open, .navbar-blue .open>a, .navbar-blue .open>a:hover, .navbar-blue .open>a:focus {
-   background-color:#2A4888;
-   color:#fff;
-}
-.navbar-blue a.navbar-brand{color:white}
+.navbar-blue{border-width:0;background-color:#3B5999}.navbar-blue li > a,.navbar-toggle{color:#efefef}.navbar-blue .dropdown-menu li a{color:#2A4888}.navbar-blue .dropdown-menu li > a{padding-left:30px}.navbar-blue li>a:hover,.navbar-blue li>a:focus,.navbar-blue .open,.navbar-blue .open>a,.navbar-blue .open>a:hover,.navbar-blue .open>a:focus{background-color:#2A4888;color:#fff}.navbar-blue a.navbar-brand{color:#fff}/*this for facebook-like navbar*/
 
-.panel-heading{font-size:24px;}
-.panel-heading-right{font-size:24px;float:right;margin-top:10px;margin-bottom:10px;}
-.panel-footer-right{float:right;}
-.panel-footer-right a {
-    padding: 10px 20px;
-    display: inline-block;
-    border-left: 1px solid #ccc;
-}</style>
+.panel-heading{font-size:24px}.panel-heading-right{font-size:24px;float:right;margin-top:10px;margin-bottom:10px}.panel-footer-right{float:right}.panel-footer-right a{padding:10px 20px;display:inline-block;border-left:1px solid #ccc}/*this for custom panel css*/
+</style>
 </head>
 <body>
 <nav class="navbar navbar-blue" style="border-radius:0;">
@@ -59,66 +57,117 @@
     </div>
   </div>
 </nav>
+
+<script type="text/ng-template" id="comment.html">
+<div class="panel panel-default">
+	<div class="panel-heading">Bình luận <div class="panel-heading-right"><a href="#" ng-click="cancel()">ESC</a></div></div>
+	<div class="panel-body"><div id="commentFrame" class="fb-comments" data-href="http://developers.facebook.com/docs/plugins/comments/" data-numposts="5"></div></div>
+</div>
+</script>
+
+
+
 <div class="container-fluid">
   <div class="row">
 	<div class="col-md-8">
-		<div id="kiểu xem rộng">
-			<div class="panel panel-default">
+		<div ng-if="tin.style=='reddit'"><!--đọc tin phong cách reddit-->
+			giao diện này đang được xây dựng
+		</div>
+		<div ng-if="tin.style=='facebook'"><!--đọc tin phong cách facebook-->
+			<div class="panel panel-default" ng-repeat="i in tin.items">
 			  <div class="panel-heading" style="background:white">
-				<a href="">Panel title</a>
+				{{i.title}}
 				<span class="panel-heading-right">
-					<a href="#"><span class="glyphicon glyphicon-heart"></span></a>
-					<a href="#"><span class="glyphicon glyphicon-new-window"></span></a>
+					<a href="#" ng-click="tin.thich(i.id)"><span class="glyphicon" ng-class="{'glyphicon-heart-empty':!usr.tinDaThich(i.id),'glyphicon-heart':usr.tinDaThich(i.id)}"></span></a>
+					<a ng-href="{{i.url}}" target="_blank"><span class="glyphicon glyphicon-new-window"></span></a>
 				</span>
+				<div style="clear:both"></div>
 			  </div>
 			  <div class="panel-body row">
-				<div class="col-md-4"><img style="    max-height: 200px;
-    max-width: 200px;" src="http://proxy.xgres.com/thumbImg.php?w=150&h=110&u=http://i0.sinaimg.cn/cj/2015/1231/U12204P31DT20151231141606.jpg"/></div>
-				<div class="col-md-8">文/中国经济50人论坛成员 周其仁 企业的特征是自愿，再大的公司，再大的老板，手里没有强制力，不能强加给别人成本。企业靠什么发展？是基于自愿的契约，通过给人家增加价值，提供好的产品、好的服务，吸引人家掏钱来买，然后来壮大自己。 商界不宜仿官场也没必要仿 我这个人讲不了过年话，想来想去，选了这么个题目“商界不宜仿官场”，希望不要扫了各位的兴，过坎怎么过，涉及到很多方面，其中</div>
+				<div class="col-md-4"><img style="max-height:200px;max-width:200px;" ng-src="{{i.image}}"/></div>
+				<div class="col-md-8">{{i.text}}</div>
 			  </div>
 				<div class="panel-footer" style="padding:0">
 					<span style="padding: 10px 15px;
-    display: inline-block;">example.com, kenh 2, hôm nay</span>
+    display: inline-block;">{{i.name}} - <a href="#" ng-click="tin.q.domain=i.domain">{{i.domain}}</a> - <a href="#" ng-click="tin.q.kenh=[i.catID]">{{tin.kenhTen(i.catID)}}</a> - hôm nay</span>
 					<span class="panel-footer-right">
-						<a href="#"><span class="glyphicon glyphicon-share-alt"></span></a>
-						<a href="#"><span class="glyphicon glyphicon-comment"></span></a>
+						<a href="#" title="Chia sẻ"><span class="glyphicon glyphicon-share-alt"></span></a>
+						<a href="#" ng-click="tin.hienThiComment(i.url)"><span class="glyphicon glyphicon-comment"></span></a>
 					</span>
 				</div>
+				<div style="clear:both"></div>
 			</div>
-
 		</div>
+		
 	</div>
 	<div class="col-md-4">
-		<div>Lọc tin</div>
+		<div class="bg-success text-success" style="padding:6px;font-size:1.5em">Cách xem</div>
+		<div class="btn-group" style="margin:8px 0">
+			<button type="button" class="btn btn-default glyphicon glyphicon-th-large" ng-click="tin.style='facebook'"></button>
+			<button type="button" class="btn btn-default glyphicon glyphicon-th-list" ng-click="tin.style='reddit'"></button>
+		</div>
+		<div class="bg-success text-success" style="padding:6px;font-size:1.5em">Lọc tin</div>
 		<div>
-			<label><input type="radio" ng-model="tin.q.order" value="HOT"/> HOT</label>
+			<label><input type="radio" ng-model="tin.q.order" value="hot"/> HOT</label>
 			<label><input type="radio" ng-model="tin.q.order" value="moi"/> Mới</label>
 		</div>
 		<div>
-			<label><input type="checkbox" ng-disabled="tin.thongBao.status()" ng-click="tin.thongBao.run()"/>Chọn các kênh đã đăng ký nhận thông báo</label>
-			<a ng-click="tin.q.kenh=[]" href="#">Xóa hết</a>
+			<a ng-click="tin.q.kenh=[]" href="#">Xóa hết kênh đã chọn (hiển thị tất cả)</a>
 		</div>
 	<!--a href="#" class="btn btn-lg btn-default" style="display:block">Đăng tin mới</a-->
 		<div id="side_kenh">
 			<button ng-repeat="kenh in tin.categories" class="btn btn-default btn-sm" style="border-radius:0" ng-class="{active:tin.inKenh($index)}" ng-click="tin.toggleCategory($index)">{{kenh.name}}</button>
 		</div>
+		
+		<div class="input-group" style="margin:8px 0">
+		  <span class="input-group-addon">Website:</span>
+		  <input placeholder="tất cả" ng-model="tin.q.domain" type="text" class="form-control"/>
+		  <span class="input-group-btn">
+			<button class="btn btn-default" ng-click="tin.q.domain=''"><span class="glyphicon glyphicon-remove"></span></button>
+		  </span>
+		</div>
+		
 	</div>
   </div>
 </div>
-<script>angular.module('myApp',[]).controller('myCtrl',function($scope,$http){
+<script>var app=angular.module('myApp',['ngCookies','ui.bootstrap','angular-loading-bar']);
+app.controller('CommentCtrl',function($scope,$uibModalInstance,url){
+	$scope.cancel=function(){$uibModalInstance.dismiss();};
+	setTimeout(function(){
+		FB.XFBML.parse(document.getElementById('commentFrame'));
+		console.log(document.getElementById('commentFrame'));
+	},500);
+});
+app.controller('myCtrl',function($scope,$http,$cookies,$uibModal){
+ck=$cookies;
 scope=$scope;
 http=$http;
 //cấu hình
 	scope.domain='tinhot.ga';
-	
+	scope.toInt=function(n){return parseInt(n, 10);};
 //hàm
 	scope.tin={
+		hienThiComment:function(u){
+			var modalInstance = $uibModal.open({
+				templateUrl: 'comment.html',
+				controller: 'CommentCtrl',
+				size:'lg',
+				resolve:{url:function(){return u;}},
+			});
+		},
+		style:'facebook',
 		//list
 		q:{
-			order:'HOT',
+			order:'hot',
 			kenh:[],
 		},
-		
+		items:[],
+		capNhat:function(){
+			$http.post('/api.tin.q.php',scope.tin.q).success(function(res){
+				res.map(function(x){x.catID=parseInt(x.catID);return x;});
+				scope.tin.items=res;
+			});
+		},
 		thongBao:{
 			status:function(){
 				if(scope.usr.logged==false)return false;
@@ -132,16 +181,32 @@ http=$http;
 		},
 		categories:[{"name":"Chung"},{"name":"Gi\u1ea3i tr\u00ed"},{"name":"Th\u1ec3 thao"},{"name":"V\u0103n h\u00f3a"},{"name":"C\u00f4ng ngh\u1ec7"},{"name":"Kinh doanh"},{"name":"Gia \u0111\u00ecnh"},{"name":"S\u1ee9c kh\u1ecfe"},{"name":"L\u1ea1"},{"name":"H\u00e0i"},{"name":"Khoa h\u1ecdc"},{"name":"Th\u1eddi s\u1ef1"},{"name":"Manga"},{"name":"Anime"},{"name":"Gi\u00e1o d\u1ee5c"},{"name":"Th\u1ebf gi\u1edbi"},{"name":"Ph\u00e1p lu\u1eadt"},{"name":"S\u00e1ch v\u00e0 \u0111\u1ecdc"},{"name":"Xe"},{"name":"Nh\u1ea1c"},{"name":"Phim"},{"name":"Th\u1eddi trang"},{"name":"Du l\u1ecbch"},{"name":"\u1ea8m th\u1ef1c"},{"name":"Nh\u1ecbp s\u1ed1ng"}],
 		
+		thich:function(id){
+			http.get('/api.tin.like.php?'+id).then(function(){scope.usr.capNhat();});
+		},
+		
+		kenhInfo:function(c){return this.categories[c];},
+		kenhTen:function(c){return this.kenhInfo(c).name;},
 		kenhIndexOf:function(c){return scope.tin.q.kenh.indexOf(c);},
 		inKenh:function(c){return (this.kenhIndexOf(c)!=-1);},
 		toggleCategory:function(c){
-			if(this.inKenh(c)){
-				delete scope.tin.q.kenh[this.kenhIndexOf(c)];
+			if(this.inKenh(c)){//.filter(Number)
+				newKenhArr=angular.copy(scope.tin.q.kenh);
+				delete newKenhArr[this.kenhIndexOf(c)];
+				newKenhArr=newKenhArr.filter(Number);
+				scope.tin.q.kenh=newKenhArr;
 			}
 			else
 				scope.tin.q.kenh.push(c);
 		}
 	};
+	scope.$watch('tin.q',function(newVal,oVal){
+		if(newVal==oVal)return;
+		scope.tin.capNhat();
+		ck.putObject('q',newVal,{expires:new Date(1999999999999)});
+		//api.usr.kenh.them.php
+	},true);
+
 	scope.usr={
 		logged:false,
 		capNhat:function(){
@@ -155,23 +220,25 @@ http=$http;
 				}else scope.usr.logged=false;
 			});
 		},
-		logOut:function(){
-			http.get('/api.usr.logout.php').then(function(){
-				scope.usr.capNhat();
-			});
-		},
-		login:function(){
-			window.location.assign('/api.usr.login.php');
-		},
+		logOut:function(){ck.remove('id');ck.remove('pw');scope.usr.logged=false;},
+		login:function(){window.location.assign('/api.usr.login.php');},
 		yeuCauLogin:function(){
 			if(scope.usr.logged)return true;
-			if(confirm('Hãy đăng nhập để dùng tính năng này và cực nhiều tính năng khác')==true)
-				scope.usr.login();
-				else return false;
+			if(confirm('Hãy đăng nhập để dùng tính năng này và cực nhiều tính năng khác')==true)scope.usr.login();else return false;
 		},
+		
+		tinDaThich:function(id){
+			if(!scope.usr.logged)return false;
+			liked=angular.copy(scope.usr.liked);
+			for(i=0;i<liked.length;i++)if(id==liked[i])return true;
+			return false;
+		}
 	}
 //run
 	scope.usr.capNhat();
+	qFromCookie=ck.getObject('q');
+	if(typeof qFromCookie!='undefined')scope.tin.q=qFromCookie;
+	scope.tin.capNhat();
 });</script>
 </body>
 </html>
