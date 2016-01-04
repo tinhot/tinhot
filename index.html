@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html lang="en" ng-app="myApp" ng-controller="myCtrl">
+<html lang="vi" ng-app="myApp" ng-controller="myCtrl">
 <head>
   <title>{{domain}}</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/css/bootstrap.min.css"/>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/angular-loading-bar/0.8.0/loading-bar.min.css"/>
   
@@ -27,30 +28,31 @@
   <style>
 .nav,.pagination,.carousel,.panel-title a{cursor:pointer}/*this for ui-bootstrap.min.js*/
 
-#loading-bar .bar{background:#F12B24}#loading-bar-spinner .spinner-icon{border-top-color:#F12B24;border-left-color:#F12B24}#loading-bar .peg{-moz-box-shadow:#F12B24 1px 0 6px 1px;-ms-box-shadow:#F12B24 1px 0 6px 1px;-webkit-box-shadow:#F12B24 1px 0 6px 1px;box-shadow:#F12B24 1px 0 6px 1px}/*this for loading-bar*/
+#loading-bar .bar{background:#F12B24;}#loading-bar-spinner .spinner-icon{border-top-color:#F12B24;border-left-color:#F12B24}#loading-bar .peg{-moz-box-shadow:#F12B24 1px 0 6px 1px;-ms-box-shadow:#F12B24 1px 0 6px 1px;-webkit-box-shadow:#F12B24 1px 0 6px 1px;box-shadow:#F12B24 1px 0 6px 1px}/*this for loading-bar*/
 
 .navbar-blue{border-width:0;background-color:#3B5999}.navbar-blue li > a,.navbar-toggle{color:#efefef}.navbar-blue .dropdown-menu li a{color:#2A4888}.navbar-blue .dropdown-menu li > a{padding-left:30px}.navbar-blue li>a:hover,.navbar-blue li>a:focus,.navbar-blue .open,.navbar-blue .open>a,.navbar-blue .open>a:hover,.navbar-blue .open>a:focus{background-color:#2A4888;color:#fff}.navbar-blue a.navbar-brand{color:#fff}/*this for facebook-like navbar*/
 
 .panel-heading{font-size:24px}.panel-heading-right{font-size:24px;float:right;margin-top:10px;margin-bottom:10px}.panel-footer-right{float:right}.panel-footer-right a{padding:10px 20px;display:inline-block;border-left:1px solid #ccc}/*this for custom panel css*/
+button:focus,a:focus{outline:0!important}
 </style>
 </head>
 <body>
-<nav class="navbar navbar-blue" style="border-radius:0;">
+<nav class="navbar navbar-default" style="border-radius:0;">
   <div class="container-fluid">
     <div class="navbar-header">
-      <a class="navbar-brand" href="#">{{domain}}</a>
+      <a class="navbar-brand" href>{{domain}}</a>
     </div>
     <div>
       <ul class="nav navbar-nav"></ul>
       <ul class="nav navbar-nav navbar-right">
-        <li><a href="#"><i class="glyphicon glyphicon-plus"></i> Đăng</a></li>
+        <li><a href><i class="glyphicon glyphicon-plus"></i> Đăng</a></li>
         <li class="dropdown" ng-if="usr.logged" title="{{usr.name}}">
-			<a style="padding:4px;" class="dropdown-toggle" data-toggle="dropdown" href="#"><img style="border-radius: 4px;width:42px;" ng-src="http://graph.facebook.com/{{usr.fbid}}/picture"/></a>
+			<a style="padding:4px;" class="dropdown-toggle" data-toggle="dropdown" href><img style="border-radius: 4px;width:42px;" ng-src="http://graph.facebook.com/{{usr.fbid}}/picture"/></a>
 			<ul class="dropdown-menu">
-				<li ng-click="usr.logOut()"><a href="#">Thoát nick</a></li>
+				<li ng-click="usr.logOut()"><a href>Thoát nick</a></li>
 			</ul>
 		</li>
-        <li ng-if="!usr.logged" ng-click="usr.login()"><a href="#">facebook | Đăng nhập</a></li>
+        <li ng-if="!usr.logged" ng-click="usr.login()"><a href>facebook | Đăng nhập</a></li>
       </ul>
 	  
 	  
@@ -60,71 +62,79 @@
 
 <script type="text/ng-template" id="comment.html">
 <div class="panel panel-default">
-	<div class="panel-heading">Bình luận <div class="panel-heading-right"><a href="#" ng-click="cancel()">ESC</a></div></div>
-	<div class="panel-body"><div id="commentFrame" class="fb-comments" data-href="http://developers.facebook.com/docs/plugins/comments/" data-numposts="5"></div></div>
+	<div class="panel-heading">Bình luận <div class="panel-heading-right"><a href ng-click="cancel()">ESC</a></div></div>
+	<div class="panel-body" id="commentFrame"><div class="fb-comments" data-href="{{u}}" data-numposts="5"></div></div>
 </div>
+</script>
+
+<script type="text/ng-template" id="share.html">
+	<div class="panel panel-default">
+		<div class="panel-heading">Chia sẻ<div class="panel-heading-right"><a href ng-click="cancel()">ESC</a></div></div>
+		<div class="panel-body">
+			<div><a ng-href="http://link.apps.zing.vn/share?u={{tin.url}}" target="_blank" class="btn btn-default" style="color:white;background:#009DDC;background:-webkit-linear-gradient(left,#009DDC,#47AA42,#F57B20,#EE2375);background:-o-linear-gradient(left,#009DDC,#47AA42,#F57B20,#EE2375);background:-moz-linear-gradient(left,#009DDC,#47AA42,#F57B20,#EE2375);background:linear-gradient(to right,#009DDC,#47AA42,#F57B20,#EE2375);">Z</a> <a ng-href="http://link.apps.zing.vn/share?u={{tin.url}}" target="_blank" class="btn btn-default" href="#">ZingMe</a></div>
+			<div><a ng-href="https://www.facebook.com/sharer/sharer.php?u={{tin.url}}" target="_blank" class="btn btn-default" href style="background:#3B5999;color:white">f</a> <a ng-href="https://www.facebook.com/sharer/sharer.php?u={{tin.url}}" target="_blank" class="btn btn-default" ng-href="{{tin.url}}">Facebook</a></div>
+		</div>
+	</div>
 </script>
 
 
 
 <div class="container-fluid">
   <div class="row">
-	<div class="col-md-8">
-		<div ng-if="tin.style=='reddit'"><!--đọc tin phong cách reddit-->
-			giao diện này đang được xây dựng
-		</div>
-		<div ng-if="tin.style=='facebook'"><!--đọc tin phong cách facebook-->
-			<div class="panel panel-default" ng-repeat="i in tin.items">
-			  <div class="panel-heading" style="background:white">
-				{{i.title}}
-				<span class="panel-heading-right">
-					<a href="#" ng-click="tin.thich(i.id)"><span class="glyphicon" ng-class="{'glyphicon-heart-empty':!usr.tinDaThich(i.id),'glyphicon-heart':usr.tinDaThich(i.id)}"></span></a>
-					<a ng-href="{{i.url}}" target="_blank"><span class="glyphicon glyphicon-new-window"></span></a>
-				</span>
-				<div style="clear:both"></div>
-			  </div>
-			  <div class="panel-body row">
-				<div class="col-md-4"><img style="max-height:200px;max-width:200px;" ng-src="{{i.image}}"/></div>
-				<div class="col-md-8">{{i.text}}</div>
-			  </div>
-				<div class="panel-footer" style="padding:0">
-					<span style="padding: 10px 15px;
-    display: inline-block;">{{i.name}} - <a href="#" ng-click="tin.q.domain=i.domain">{{i.domain}}</a> - <a href="#" ng-click="tin.q.kenh=[i.catID]">{{tin.kenhTen(i.catID)}}</a> - hôm nay</span>
-					<span class="panel-footer-right">
-						<a href="#" title="Chia sẻ"><span class="glyphicon glyphicon-share-alt"></span></a>
-						<a href="#" ng-click="tin.hienThiComment(i.url)"><span class="glyphicon glyphicon-comment"></span></a>
-					</span>
-				</div>
-				<div style="clear:both"></div>
-			</div>
-		</div>
-		
-	</div>
 	<div class="col-md-4">
-		<div class="bg-success text-success" style="padding:6px;font-size:1.5em">Cách xem</div>
-		<div class="btn-group" style="margin:8px 0">
-			<button type="button" class="btn btn-default glyphicon glyphicon-th-large" ng-click="tin.style='facebook'"></button>
-			<button type="button" class="btn btn-default glyphicon glyphicon-th-list" ng-click="tin.style='reddit'"></button>
-		</div>
+		<div class="bg-success text-success" style="padding:6px;font-size:1.5em">Giao diện</div>
+		<label>News Feed <span class="glyphicon glyphicon-th-large"></span> <input type="radio" ng-model="tin.style" value="facebook"/></label>
+		| |
+		<label><input type="radio" ng-model="tin.style" value="reddit"/> <span class="glyphicon glyphicon-th-list"></span> Bảng</label>
+
 		<div class="bg-success text-success" style="padding:6px;font-size:1.5em">Lọc tin</div>
 		<div>
-			<label><input type="radio" ng-model="tin.q.order" value="hot"/> HOT</label>
-			<label><input type="radio" ng-model="tin.q.order" value="moi"/> Mới</label>
+			<label><input type="radio" ng-model="tin.q.order" value="hot"/> Đã duyệt</label>
+			<label><input type="radio" ng-model="tin.q.order" value="moi"/> Chưa duyệt</label>
 		</div>
-		<div>
-			<a ng-click="tin.q.kenh=[]" href="#">Xóa hết kênh đã chọn (hiển thị tất cả)</a>
-		</div>
-	<!--a href="#" class="btn btn-lg btn-default" style="display:block">Đăng tin mới</a-->
+		<div>Từ các kênh</div>
+	<!--a href class="btn btn-lg btn-default" style="display:block">Đăng tin mới</a-->
 		<div id="side_kenh">
 			<button ng-repeat="kenh in tin.categories" class="btn btn-default btn-sm" style="border-radius:0" ng-class="{active:tin.inKenh($index)}" ng-click="tin.toggleCategory($index)">{{kenh.name}}</button>
 		</div>
-		
+		<div><a ng-click="tin.q.kenh=[]" href><small>Xóa hết kênh đã chọn (hiển thị tất cả)</small></a></div>
+	
 		<div class="input-group" style="margin:8px 0">
 		  <span class="input-group-addon">Website:</span>
 		  <input placeholder="tất cả" ng-model="tin.q.domain" type="text" class="form-control"/>
 		  <span class="input-group-btn">
 			<button class="btn btn-default" ng-click="tin.q.domain=''"><span class="glyphicon glyphicon-remove"></span></button>
 		  </span>
+		</div>
+		<div class="bg-success text-success" style="padding:6px;font-size:1.5em">Reddit Việt Nam</div>
+		<div style="margin:5px 0"><a target="_blank" class="btn btn-default" ng-href="https://www.facebook.com/v2.3/plugins/like.php?href=http://{{domain}}&locale=vi_VN&share=true&show_faces=true"><img src="https://cdnjs.cloudflare.com/ajax/libs/webicons/2.0.0/webicons/webicon-facebook-s.png"/> Thích tinhot.ga trên Facebook</a></div>
+		<div style="border:1px solid #AEAEAE" class="fb-page" data-href="https://www.facebook.com/linkmoi" data-tabs="timeline" data-small-header="true" data-adapt-container-width="true" data-hide-cover="true" data-show-facepile="false"><div class="fb-xfbml-parse-ignore"><blockquote cite="https://www.facebook.com/linkmoi"><a href="https://www.facebook.com/linkmoi">Link Mới</a></blockquote></div></div>
+	</div>
+	<div class="col-md-8">
+		<div ng-if="tin.items.length==0">Không có tin nào để hiển thị</div>
+		<div ng-if="tin.style=='reddit'"><!--đọc tin phong cách reddit-->
+			giao diện này đang được xây dựng
+		</div>
+		<div ng-if="tin.style=='facebook'"><!--đọc tin phong cách facebook-->
+			<div class="panel panel-default" ng-repeat="i in tin.items" style="border-color:#AEAEAE">
+			  <div class="panel-heading" style="background:white">
+					<a href ng-click="tin.thich(i.id)"><span class="glyphicon" ng-class="{'glyphicon-heart-empty':!usr.tinDaThich(i.id),'glyphicon-heart':usr.tinDaThich(i.id)}"></span></a>
+					<a ng-href="{{i.url}}" target="_blank"><span class="glyphicon glyphicon-new-window"></span></a> {{i.title}}
+			  </div>
+			  <div class="panel-body row">
+				<div class="col-md-6"><img style="max-height:400px;width:100%;" ng-src="{{i.image}}"/></div>
+				<div class="col-md-6">{{i.text}}</div>
+			  </div>
+				<div class="panel-footer" style="padding:0">
+					<span style="padding: 10px 15px;
+    display: inline-block;">{{i.name}} - <a href ng-click="tin.q.domain=i.domain">{{i.domain}}</a> - <a href ng-click="tin.q.kenh=[i.catID]">{{tin.kenhTen(i.catID)}}</a> - hôm nay</span>
+					<span class="panel-footer-right">
+						<a href ng-click="tin.hienShareBox(i)" title="Chia sẻ"><span class="glyphicon glyphicon-share-alt"></span></a>
+						<a href ng-click="tin.hienThiComment(i.url)"><span class="glyphicon glyphicon-comment"></span></a>
+					</span>
+				</div>
+				<div style="clear:both"></div>
+			</div>
 		</div>
 		
 	</div>
@@ -133,30 +143,46 @@
 <script>var app=angular.module('myApp',['ngCookies','ui.bootstrap','angular-loading-bar']);
 app.controller('CommentCtrl',function($scope,$uibModalInstance,url){
 	$scope.cancel=function(){$uibModalInstance.dismiss();};
-	setTimeout(function(){
-		FB.XFBML.parse(document.getElementById('commentFrame'));
-		console.log(document.getElementById('commentFrame'));
-	},500);
+	$scope.u=url;
 });
-app.controller('myCtrl',function($scope,$http,$cookies,$uibModal){
+app.controller('ShareCtrl',function($scope,$uibModalInstance,tin){
+	$scope.tin=tin;
+	$scope.cancel=function(){$uibModalInstance.dismiss();};
+});
+app.controller('myCtrl',function($scope,$http,$cookies,$uibModal,$q){
 ck=$cookies;
 scope=$scope;
 http=$http;
-//cấu hình
+/*cấu hình*/
 	scope.domain='tinhot.ga';
 	scope.toInt=function(n){return parseInt(n, 10);};
-//hàm
+/*hàm*/
 	scope.tin={
 		hienThiComment:function(u){
-			var modalInstance = $uibModal.open({
-				templateUrl: 'comment.html',
-				controller: 'CommentCtrl',
-				size:'lg',
-				resolve:{url:function(){return u;}},
+			function fn5435(){
+				var modalInstance = $uibModal.open({
+					templateUrl: 'comment.html',
+					controller: 'CommentCtrl',
+					size:'lg',
+					resolve:{url:function(){return u;}},
+				});
+				return true;
+			}
+			function fn37478(){
+				FB.XFBML.parse(document.getElementById('commentFrame'));
+			}
+			jQuery.when(fn5435()).then(function(){setTimeout(fn37478,1);});
+		},
+		hienShareBox:function(tin){
+			$uibModal.open({
+				templateUrl: 'share.html',
+				controller: 'ShareCtrl',
+				size:'sm',
+				resolve:{tin:function(){return tin;}},
 			});
 		},
 		style:'facebook',
-		//list
+		/*list*/
 		q:{
 			order:'hot',
 			kenh:[],
@@ -190,7 +216,7 @@ http=$http;
 		kenhIndexOf:function(c){return scope.tin.q.kenh.indexOf(c);},
 		inKenh:function(c){return (this.kenhIndexOf(c)!=-1);},
 		toggleCategory:function(c){
-			if(this.inKenh(c)){//.filter(Number)
+			if(this.inKenh(c)){/*.filter(Number)*/
 				newKenhArr=angular.copy(scope.tin.q.kenh);
 				delete newKenhArr[this.kenhIndexOf(c)];
 				newKenhArr=newKenhArr.filter(Number);
@@ -204,7 +230,7 @@ http=$http;
 		if(newVal==oVal)return;
 		scope.tin.capNhat();
 		ck.putObject('q',newVal,{expires:new Date(1999999999999)});
-		//api.usr.kenh.them.php
+		/*api.usr.kenh.them.php*/
 	},true);
 
 	scope.usr={
@@ -234,7 +260,7 @@ http=$http;
 			return false;
 		}
 	}
-//run
+/*run*/
 	scope.usr.capNhat();
 	qFromCookie=ck.getObject('q');
 	if(typeof qFromCookie!='undefined')scope.tin.q=qFromCookie;
